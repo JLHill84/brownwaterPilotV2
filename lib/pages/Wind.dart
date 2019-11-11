@@ -12,28 +12,10 @@ class Wind extends StatefulWidget {
   _WindState createState() => _WindState();
 }
 
-// class WindStation {
-//   String name;
-//   String speed;
-//   double bearing;
-//   double lat;
-//   double lng;
-
-//   WindStation.fromJson(Map<String, dynamic> data)
-//       : name = data['name'],
-//         speed = data['windSpeed']['value'],
-//         bearing = data['windDirection']['value'],
-//         lat = data['geometry']['coordinates'][1],
-//         lng = data['geometry']['coordinates'][1];
-// }
-
 class _WindState extends State<Wind> {
-  Completer<GoogleMapController> _controller = Completer();
-
   static LatLng _center = LatLng(29.760427, -95.369804);
   final Set<Marker> _markers = {};
-  LatLng _lastMapPosition = _center;
-  LatLngBounds latLngBounds;
+  // LatLng _lastMapPosition = _center;
   MapType _currentMapType = MapType.normal;
 
   static final CameraPosition _position1 = CameraPosition(
@@ -45,6 +27,8 @@ class _WindState extends State<Wind> {
   // Future<Map<String, dynamic>> _getStationList() async {
   Future<void> _getStationList() async {
     try {
+      // GoogleMapController controller;
+      // LatLngBounds bounds = await controller.getVisibleRegion();
       var url =
           'https://api.weather.gov/points/${_center.latitude},${_center.longitude}';
       var response = await http.get(url, headers: {
@@ -77,9 +61,10 @@ class _WindState extends State<Wind> {
             data3['geometry']['coordinates'][1] == null ||
             data3['geometry']['coordinates'][0] == null ||
             data3['properties']['windDirection']['value'] == null) {
+          // data3['geometry']['coordinates'][0] > bounds.southwest.longitude ||
+          // data3['geometry']['coordinates'][1] < bounds.northeast.latitude) {
           continue;
         } else {
-          print(data3['properties']['windSpeed']['value'] + 0.1);
           setState(() {
             _markers.add(Marker(
               markerId: MarkerId(data3['properties']['station']),
@@ -95,6 +80,7 @@ class _WindState extends State<Wind> {
               icon: windIcon,
             ));
           });
+          print("marker added");
         }
       }
     } catch (ex) {
