@@ -13,6 +13,7 @@ class Wind extends StatefulWidget {
 }
 
 class _WindState extends State<Wind> {
+  Completer<GoogleMapController> _controller = Completer();
   static LatLng _center = LatLng(29.760427, -95.369804);
   final Set<Marker> _markers = {};
   // LatLng _lastMapPosition = _center;
@@ -27,8 +28,6 @@ class _WindState extends State<Wind> {
   // Future<Map<String, dynamic>> _getStationList() async {
   Future<void> _getStationList() async {
     try {
-      // GoogleMapController controller;
-      // LatLngBounds bounds = await controller.getVisibleRegion();
       var url =
           'https://api.weather.gov/points/${_center.latitude},${_center.longitude}';
       var response = await http.get(url, headers: {
@@ -89,7 +88,10 @@ class _WindState extends State<Wind> {
     return;
   } // AYE, AND NOW IT ENDS
 
-  _onMapCreated(GoogleMapController controller) {
+  _onMapCreated(GoogleMapController controller) async {
+    // GoogleMapController controller = await _controller.future;
+    LatLngBounds bounds = await controller.getVisibleRegion();
+    print(bounds);
     _getStationList();
   }
 
@@ -101,6 +103,13 @@ class _WindState extends State<Wind> {
 
   _onCameraIdle() {
     _getStationList();
+  }
+
+  _getBounds() async {
+    print("bounded");
+    GoogleMapController controller;
+    LatLngBounds bounds = controller.getVisibleRegion() as LatLngBounds;
+    print(bounds);
   }
 
   Widget button(Function function, IconData icon) {
@@ -140,7 +149,8 @@ class _WindState extends State<Wind> {
         compassEnabled: true,
         myLocationEnabled: true,
       ),
-      button(_getStationList, Icons.location_searching),
+      button(_getBounds, Icons.assignment),
+      // button(_getStationList, Icons.location_searching),
     ]));
   }
 }
