@@ -67,9 +67,9 @@ class _WindState extends State<Wind> {
           setState(() {
             _markers.add(Marker(
               markerId: MarkerId(data3['properties']['station']),
-              rotation: data3['properties']['windDirection']['value'] + 0.1,
-              position: LatLng(data3['geometry']['coordinates'][1] + 0.1,
-                  data3['geometry']['coordinates'][0] + 0.1),
+              rotation: data3['properties']['windDirection']['value'] + 0.0,
+              position: LatLng(data3['geometry']['coordinates'][1] + 0.0,
+                  data3['geometry']['coordinates'][0] + 0.0),
               // consumeTapEvents: true,
               infoWindow: InfoWindow(
                 title:

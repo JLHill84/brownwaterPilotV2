@@ -1,4 +1,4 @@
-// import 'package:brownwater_pilot/pages/AIS.dart';
+import 'package:brownwater_pilot/pages/AIS.dart';
 import 'package:brownwater_pilot/pages/profile.dart';
 import 'package:brownwater_pilot/pages/radar.dart';
 import 'package:brownwater_pilot/pages/wind.dart';
@@ -13,7 +13,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int _currentIndex = 0;
   final List<Widget> _children = [
-    // AISPage(),
+    AISPage(),
     Wind(),
     Radar(),
     UserProfile(),
@@ -40,10 +40,10 @@ class _HomePageState extends State<HomePage> {
           });
         },
         items: [
-          // BottomNavigationBarItem(
-          //   icon: Icon(Icons.language),
-          //   title: Text('AIS'),
-          // ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.language),
+            title: Text('AIS'),
+          ),
           BottomNavigationBarItem(
             icon: Icon(Icons.flag),
             title: Text('Wind'),
