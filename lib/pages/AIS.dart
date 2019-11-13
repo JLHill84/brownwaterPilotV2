@@ -65,7 +65,7 @@ class _AISPageState extends State<AISPage> {
               // consumeTapEvents: true,
               infoWindow: InfoWindow(
                   title: '${data[i]['SHIPNAME']}',
-                  snippet: '${int.parse(data[i]['SPEED']) / 10} knots'),
+                  snippet: '${int.parse(data[i]['SPEED']) / 10} kts'),
               icon: towboatIcon,
             ));
           },
@@ -86,7 +86,7 @@ class _AISPageState extends State<AISPage> {
               // consumeTapEvents: true,
               infoWindow: InfoWindow(
                   title: '${data[i]['SHIPNAME']}',
-                  snippet: '${int.parse(data[i]['SPEED']) / 10} knots'),
+                  snippet: '${int.parse(data[i]['SPEED']) / 10} kts'),
               icon: towboatParkedIcon,
             ));
           },
@@ -107,7 +107,7 @@ class _AISPageState extends State<AISPage> {
               // consumeTapEvents: true,
               infoWindow: InfoWindow(
                   title: '${data[i]['SHIPNAME']}',
-                  snippet: '${int.parse(data[i]['SPEED']) / 10} knots'),
+                  snippet: '${int.parse(data[i]['SPEED']) / 10} kts'),
               icon: shipIcon,
             ));
           },
@@ -127,7 +127,7 @@ class _AISPageState extends State<AISPage> {
               // consumeTapEvents: true,
               infoWindow: InfoWindow(
                   title: '${data[i]['SHIPNAME']}',
-                  snippet: '${int.parse(data[i]['SPEED']) / 10} knots'),
+                  snippet: '${int.parse(data[i]['SPEED']) / 10} kts'),
               icon: shipParkedIcon,
             ));
           },
@@ -151,7 +151,7 @@ class _AISPageState extends State<AISPage> {
               // consumeTapEvents: true,
               infoWindow: InfoWindow(
                   title: '${data[i]['SHIPNAME']}',
-                  snippet: '${int.parse(data[i]['SPEED']) / 10} knots'),
+                  snippet: '${int.parse(data[i]['SPEED']) / 10} kts'),
               icon: fishingIcon,
             ));
           },
@@ -174,7 +174,7 @@ class _AISPageState extends State<AISPage> {
               // consumeTapEvents: true,
               infoWindow: InfoWindow(
                   title: '${data[i]['SHIPNAME']}',
-                  snippet: '${int.parse(data[i]['SPEED']) / 10} knots'),
+                  snippet: '${int.parse(data[i]['SPEED']) / 10} kts'),
               icon: fishingParkedIcon,
             ));
           },
