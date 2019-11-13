@@ -42,7 +42,7 @@ class _WindState extends State<Wind> {
             "Accept": "application/json"
           });
       Map data2 = json.decode(response2.body);
-// AND NOW THE FOR LOOP BEGINS!
+// NOW THE FOR LOOP BEGINS!
       for (int i = 0; i < data2['observationStations'].length; i++) {
         var url = data2['observationStations'][i] +
             "/observations/latest?require_qc=false";

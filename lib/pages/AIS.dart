@@ -3,7 +3,6 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:http/http.dart' as http;
 // import 'package:location/location.dart';
 
 class AISPage extends StatefulWidget {
@@ -14,76 +13,58 @@ class AISPage extends StatefulWidget {
 class _AISPageState extends State<AISPage> {
   Completer<GoogleMapController> _controller = Completer();
 
-  static const LatLng _center = const LatLng(29.760427, -95.369804);
+  static const LatLng _center = const LatLng(29.662377, -95.097319);
   final Set<Marker> _markers = {};
-  LatLng _lastMapPosition = _center;
+  // LatLng _lastMapPosition = _center;
   MapType _currentMapType = MapType.normal;
+  BitmapDescriptor towboatIcon;
+  BitmapDescriptor towboatParkedIcon;
+  BitmapDescriptor shipIcon;
+  BitmapDescriptor shipParkedIcon;
+  BitmapDescriptor fishingIcon;
+  BitmapDescriptor fishingParkedIcon;
 
   static final CameraPosition _position1 = CameraPosition(
       bearing: 0, target: LatLng(29.760427, -95.369804), tilt: 0, zoom: 15);
 
-  Future<void> _goToPosition1() async {
-    
-    final GoogleMapController controller = await _controller.future;
-    controller.animateCamera(CameraUpdate.newCameraPosition(_position1));
-  }
+  // Future<void> _goToPosition1() async {
+  //   final GoogleMapController controller = await _controller.future;
+  //   controller.animateCamera(CameraUpdate.newCameraPosition(_position1));
+  // }
 
-  _onMapCreated(GoogleMapController controller) {
+  _onMapCreated(GoogleMapController controller) async {
+    // LatLngBounds bounds = await controller.getVisibleRegion();
+    // print(bounds);
     _controller.complete(controller);
+    _parseJson();
   }
 
   _onCameraMove(CameraPosition position) {
-    _lastMapPosition = position.target;
+    // _lastMapPosition = position.target;
   }
 
-  Future<void> _getShipList() async {
-    try {
-      var url =
-          'https://services.marinetraffic.com/api/exportvessels/v:8/MARINETRAFFICAPIKEY/MINLAT:value/MAXLAT:value/MINLON:value/MAXLON:value/timespan:30/protocol:jsono';
-      var response = await http.get(url);
-      Map data = json.decode(response.body);
+  _parseJson() async {
+    String dataString =
+        await DefaultAssetBundle.of(context).loadString('./assets/data.json');
+    List data = jsonDecode(dataString);
+    // print(int.parse(data[0]['SPEED'])/10);
 
-// AND NOW THE FOR LOOP BEGINS!
-      for (int i = 0; i < data.length; i++) {
-        var url = data2['observationStations'][i] +
-            "/observations/latest?require_qc=false";
-
-        http.Response loopResponse = await http.get(url, headers: {
-          "token": "AhrYtjbSwpZXOuYdaeZRruodMZIOhjCS",
-          "Accept": "application/json"
-        });
-
-        Map data3 = json.decode(loopResponse.body);
-
-        if (data3['properties'] == null ||
-            data3['properties']['windSpeed'] == null ||
-            data3['properties']['windSpeed']['value'] == null ||
-            data3['geometry']['coordinates'][1] == null ||
-            data3['geometry']['coordinates'][0] == null ||
-            data3['properties']['windDirection']['value'] == null) {
-          // data3['geometry']['coordinates'][0] > bounds.southwest.longitude ||
-          // data3['geometry']['coordinates'][1] < bounds.northeast.latitude) {
-          continue;
-        } else {
-          setState(() {
-            _markers.add(Marker(
-              markerId: MarkerId(data3['properties']['station']),
-              rotation: data3['properties']['windDirection']['value'] + 0.0,
-              position: LatLng(data3['geometry']['coordinates'][1] + 0.0,
-                  data3['geometry']['coordinates'][0] + 0.0),
-              // consumeTapEvents: true,
-              infoWindow: InfoWindow(
-                title:
-                    '${data3['properties']['windSpeed']['value'].toString()} mph',
-              ),
-              icon: windIcon,
-            ));
-          });
-          // print("marker added");
-        }
-      }
-    } catch (ex) {
-      print(ex);
+// NOW THE FOR LOOP BEGINS!
+    for (int i = 0; i < data.length; i++) {
+      setState(() {
+        _markers.add(Marker(
+          markerId: MarkerId(data[i]['MMSI']),
+          rotation: double.parse(data[i]['HEADING']),
+          position: LatLng(
+              double.parse(data[i]['LAT']), double.parse(data[i]['LON'])),
+          // consumeTapEvents: true,
+          infoWindow: InfoWindow(
+              title: '${data[i]['SHIPNAME']}',
+              snippet: '${int.parse(data[i]['SPEED']) / 10} knots'),
+          icon: windIcon,
+        ));
+      });
+      // print("marker added");
     }
     return;
   } // AYE, AND NOW IT ENDS
@@ -97,6 +78,40 @@ class _AISPageState extends State<AISPage> {
     );
   }
 
+  initState() {
+    super.initState();
+    BitmapDescriptor.fromAssetImage(
+            ImageConfiguration(size: Size(100, 100)), 'assets/towboat.png')
+        .then((onValue) {
+      towboatIcon = onValue;
+    });
+    BitmapDescriptor.fromAssetImage(
+            ImageConfiguration(size: Size(100, 100)), 'assets/towboatParked.png')
+        .then((onValue) {
+      towboatParkedIcon = onValue;
+    });
+    BitmapDescriptor.fromAssetImage(
+            ImageConfiguration(size: Size(100, 100)), 'assets/ship.png')
+        .then((onValue) {
+      shipIcon = onValue;
+    });
+    BitmapDescriptor.fromAssetImage(
+            ImageConfiguration(size: Size(100, 100)), 'assets/shipParked.png')
+        .then((onValue) {
+      shipParkedIcon = onValue;
+    });
+    BitmapDescriptor.fromAssetImage(
+            ImageConfiguration(size: Size(100, 100)), 'assets/fishing.png')
+        .then((onValue) {
+      fishingIcon = onValue;
+    });
+    BitmapDescriptor.fromAssetImage(
+            ImageConfiguration(size: Size(100, 100)), 'assets/fishingParked.png')
+        .then((onValue) {
+      fishingParkedIcon = onValue;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -104,9 +119,10 @@ class _AISPageState extends State<AISPage> {
         body: Stack(children: <Widget>[
           GoogleMap(
             onMapCreated: _onMapCreated,
+            // onCameraIdle: _onCameraIdle(),
             initialCameraPosition: CameraPosition(
               target: _center,
-              zoom: 9.0,
+              zoom: 10.0,
             ),
             mapType: _currentMapType,
             markers: _markers,
@@ -129,7 +145,7 @@ class _AISPageState extends State<AISPage> {
                       // SizedBox(
                       //   height: 16,
                       // ),
-                      button(_goToPosition1, Icons.location_searching),
+                      button(_parseJson, Icons.location_searching),
                     ],
                   ))),
         ]),
