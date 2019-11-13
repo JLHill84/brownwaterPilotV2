@@ -51,19 +51,32 @@ class _AISPageState extends State<AISPage> {
 
 // NOW THE FOR LOOP BEGINS!
     for (int i = 0; i < data.length; i++) {
-      setState(() {
-        _markers.add(Marker(
-          markerId: MarkerId(data[i]['MMSI']),
-          rotation: double.parse(data[i]['HEADING']),
-          position: LatLng(
-              double.parse(data[i]['LAT']), double.parse(data[i]['LON'])),
-          // consumeTapEvents: true,
-          infoWindow: InfoWindow(
-              title: '${data[i]['SHIPNAME']}',
-              snippet: '${int.parse(data[i]['SPEED']) / 10} knots'),
-          icon: windIcon,
-        ));
-      });
+      // debugPrint(data[i]['SHIPTYPE']);
+      if (data[i]['SHIPTYPE'] == "50" ||
+          data[i]['SHIPTYPE'] == "51" ||
+          data[i]['SHIPTYPE'] == "52" ||
+          data[i]['SHIPTYPE'] == "53" ||
+          data[i]['SHIPTYPE'] == "54" ||
+          data[i]['SHIPTYPE'] == "55" ||
+          data[i]['SHIPTYPE'] == "57" ||
+          data[i]['SHIPTYPE'] == "58" ||
+          data[i]['SHIPTYPE'] == "59") {
+        setState(
+          () {
+            _markers.add(Marker(
+              markerId: MarkerId(data[i]['MMSI']),
+              rotation: double.parse(data[i]['HEADING']),
+              position: LatLng(
+                  double.parse(data[i]['LAT']), double.parse(data[i]['LON'])),
+              // consumeTapEvents: true,
+              infoWindow: InfoWindow(
+                  title: '${data[i]['SHIPNAME']}',
+                  snippet: '${int.parse(data[i]['SPEED']) / 10} knots'),
+              icon: towboatIcon,
+            ));
+          },
+        );
+      }
       // print("marker added");
     }
     return;
@@ -78,6 +91,7 @@ class _AISPageState extends State<AISPage> {
     );
   }
 
+  @override
   initState() {
     super.initState();
     BitmapDescriptor.fromAssetImage(
@@ -85,8 +99,8 @@ class _AISPageState extends State<AISPage> {
         .then((onValue) {
       towboatIcon = onValue;
     });
-    BitmapDescriptor.fromAssetImage(
-            ImageConfiguration(size: Size(100, 100)), 'assets/towboatParked.png')
+    BitmapDescriptor.fromAssetImage(ImageConfiguration(size: Size(100, 100)),
+            'assets/towboatParked.png')
         .then((onValue) {
       towboatParkedIcon = onValue;
     });
@@ -105,14 +119,13 @@ class _AISPageState extends State<AISPage> {
         .then((onValue) {
       fishingIcon = onValue;
     });
-    BitmapDescriptor.fromAssetImage(
-            ImageConfiguration(size: Size(100, 100)), 'assets/fishingParked.png')
+    BitmapDescriptor.fromAssetImage(ImageConfiguration(size: Size(100, 100)),
+            'assets/fishingParked.png')
         .then((onValue) {
       fishingParkedIcon = onValue;
     });
   }
 
-  @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
