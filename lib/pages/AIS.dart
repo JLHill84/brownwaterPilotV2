@@ -47,21 +47,19 @@ class _AISPageState extends State<AISPage> {
     String dataString =
         await DefaultAssetBundle.of(context).loadString('./assets/data.json');
     List data = jsonDecode(dataString);
-    // print(int.parse(data[0]['SPEED'])/10);
 
 // NOW THE FOR LOOP BEGINS!
     for (int i = 0; i < data.length; i++) {
-      debugPrint(data[i]['SHIPTYPE']);
       // INLAND WORKBOATS
-      if (data[i]['AIS_TYPE_SUMMARY'] == 'Tug' ||
-          data[i]['AIS_TYPE_SUMMARY'] == 'Other') {
-        //  && int.parse(data[i]['SPEED']) / 10 > 0.3
+      if ((data[i]['AIS_TYPE_SUMMARY'] == 'Tug' ||
+              data[i]['AIS_TYPE_SUMMARY'] == 'Other') &&
+          int.parse(data[i]['SPEED']) / 10 > 0.3) {
         print('moving tow');
         setState(
           () {
             _markers.add(Marker(
               markerId: MarkerId(data[i]['MMSI']),
-              rotation: double.parse(data[i]['HEADING']),
+              rotation: double.parse(data[i]['COURSE']),
               position: LatLng(
                   double.parse(data[i]['LAT']), double.parse(data[i]['LON'])),
               // consumeTapEvents: true,
@@ -74,16 +72,36 @@ class _AISPageState extends State<AISPage> {
         );
 
         // SHIPS AND FERRIES
-      } else if (data[i]['AIS_TYPE_SUMMARY'] == 'Tanker' ||
-          data[i]['AIS_TYPE_SUMMARY'] == 'Cargo' ||
-          data[i]['AIS_TYPE_SUMMARY'] == 'Passenger') {
-        //     int.parse(data[i]['SPEED']) / 10 < 0.3) {
-        print("parked tow");
+      } else if ((data[i]['AIS_TYPE_SUMMARY'] == 'Tug' ||
+              data[i]['AIS_TYPE_SUMMARY'] == 'Other') &&
+          int.parse(data[i]['SPEED']) / 10 <= 0.3) {
+        print('parked tow');
         setState(
           () {
             _markers.add(Marker(
               markerId: MarkerId(data[i]['MMSI']),
-              rotation: double.parse(data[i]['HEADING']),
+              rotation: double.parse(data[i]['COURSE']),
+              position: LatLng(
+                  double.parse(data[i]['LAT']), double.parse(data[i]['LON'])),
+              // consumeTapEvents: true,
+              infoWindow: InfoWindow(
+                  title: '${data[i]['SHIPNAME']}',
+                  snippet: '${int.parse(data[i]['SPEED']) / 10} knots'),
+              icon: towboatParkedIcon,
+            ));
+          },
+        );
+        // SHIPS AND FERRIES
+      } else if ((data[i]['AIS_TYPE_SUMMARY'] == 'Tanker' ||
+              data[i]['AIS_TYPE_SUMMARY'] == 'Cargo' ||
+              data[i]['AIS_TYPE_SUMMARY'] == 'Passenger') &&
+          int.parse(data[i]['SPEED']) / 10 > 0.3) {
+        print("moving ship");
+        setState(
+          () {
+            _markers.add(Marker(
+              markerId: MarkerId(data[i]['MMSI']),
+              rotation: double.parse(data[i]['COURSE']),
               position: LatLng(
                   double.parse(data[i]['LAT']), double.parse(data[i]['LON'])),
               // consumeTapEvents: true,
@@ -94,20 +112,40 @@ class _AISPageState extends State<AISPage> {
             ));
           },
         );
-        // FISHING VESSELS
-      } else if (data[i]['AIS_TYPE_SUMMARY'] == 'Fishing' ||
-          data[i]['AIS_TYPE_SUMMARY'] == 'Pleasure Craft"' ||
-          data[i]['AIS_TYPE_SUMMARY'] == 'Special Craft' ||
-          data[i]['AIS_TYPE_SUMMARY'] == 'Unspecified' ||
-          data[i]['AIS_TYPE_SUMMARY'] == 'Sailing Vessel' ||
-          data[i]['AIS_TYPE_SUMMARY'] == 'Wing in Grnd') {
-        //     int.parse(data[i]['SPEED']) / 10 < 0.3) {
-        print("parked tow");
+      } else if ((data[i]['AIS_TYPE_SUMMARY'] == 'Tanker' ||
+              data[i]['AIS_TYPE_SUMMARY'] == 'Cargo' ||
+              data[i]['AIS_TYPE_SUMMARY'] == 'Passenger') &&
+          int.parse(data[i]['SPEED']) / 10 <= 0.3) {
+        print("parked ship");
         setState(
           () {
             _markers.add(Marker(
               markerId: MarkerId(data[i]['MMSI']),
-              rotation: double.parse(data[i]['HEADING']),
+              rotation: double.parse(data[i]['COURSE']),
+              position: LatLng(
+                  double.parse(data[i]['LAT']), double.parse(data[i]['LON'])),
+              // consumeTapEvents: true,
+              infoWindow: InfoWindow(
+                  title: '${data[i]['SHIPNAME']}',
+                  snippet: '${int.parse(data[i]['SPEED']) / 10} knots'),
+              icon: shipParkedIcon,
+            ));
+          },
+        );
+        // FISHING AND PLEASURE VESSELS
+      } else if ((data[i]['AIS_TYPE_SUMMARY'] == 'Fishing' ||
+              data[i]['AIS_TYPE_SUMMARY'] == 'Pleasure Craft"' ||
+              data[i]['AIS_TYPE_SUMMARY'] == 'Special Craft' ||
+              data[i]['AIS_TYPE_SUMMARY'] == 'Unspecified' ||
+              data[i]['AIS_TYPE_SUMMARY'] == 'Sailing Vessel' ||
+              data[i]['AIS_TYPE_SUMMARY'] == 'Wing in Grnd') &&
+          int.parse(data[i]['SPEED']) / 10 > 0.3) {
+        print("moving pleasure");
+        setState(
+          () {
+            _markers.add(Marker(
+              markerId: MarkerId(data[i]['MMSI']),
+              rotation: double.parse(data[i]['COURSE']),
               position: LatLng(
                   double.parse(data[i]['LAT']), double.parse(data[i]['LON'])),
               // consumeTapEvents: true,
@@ -115,6 +153,29 @@ class _AISPageState extends State<AISPage> {
                   title: '${data[i]['SHIPNAME']}',
                   snippet: '${int.parse(data[i]['SPEED']) / 10} knots'),
               icon: fishingIcon,
+            ));
+          },
+        );
+      } else if ((data[i]['AIS_TYPE_SUMMARY'] == 'Fishing' ||
+              data[i]['AIS_TYPE_SUMMARY'] == 'Pleasure Craft"' ||
+              data[i]['AIS_TYPE_SUMMARY'] == 'Special Craft' ||
+              data[i]['AIS_TYPE_SUMMARY'] == 'Unspecified' ||
+              data[i]['AIS_TYPE_SUMMARY'] == 'Sailing Vessel' ||
+              data[i]['AIS_TYPE_SUMMARY'] == 'Wing in Grnd') &&
+          int.parse(data[i]['SPEED']) / 10 <= 0.3) {
+        print("parked pleasure");
+        setState(
+          () {
+            _markers.add(Marker(
+              markerId: MarkerId(data[i]['MMSI']),
+              rotation: double.parse(data[i]['COURSE']),
+              position: LatLng(
+                  double.parse(data[i]['LAT']), double.parse(data[i]['LON'])),
+              // consumeTapEvents: true,
+              infoWindow: InfoWindow(
+                  title: '${data[i]['SHIPNAME']}',
+                  snippet: '${int.parse(data[i]['SPEED']) / 10} knots'),
+              icon: fishingParkedIcon,
             ));
           },
         );
