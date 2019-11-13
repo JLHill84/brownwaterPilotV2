@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "922839706052",
+    "firebase_url": "https://brownwaterpilot.firebaseio.com",
+    "project_id": "brownwaterpilot",
+    "storage_bucket": "brownwaterpilot.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:922839706052:android:1f7772aad24ccc94f55c91",
+        "android_client_info": {
+          "package_name": "dev.joshuahill.brownwater_pilot"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "922839706052-10qgtpo1cjsljtfilg371hf9bcm9hfsf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAXxTGkJbIUDIPdA64-8dujvZ-DuuFM4_E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "922839706052-10qgtpo1cjsljtfilg371hf9bcm9hfsf.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "922839706052-lon55m8p55jcpqaghshpdqga8rjvqrm0.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "dev.joshuahill.brownwaterPilot"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

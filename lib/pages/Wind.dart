@@ -19,8 +19,8 @@ class _WindState extends State<Wind> {
   // LatLng _lastMapPosition = _center;
   MapType _currentMapType = MapType.normal;
 
-  static final CameraPosition _position1 = CameraPosition(
-      bearing: 0, target: LatLng(29.760427, -95.369804), tilt: 0, zoom: 13);
+  // static final CameraPosition _position1 = CameraPosition(
+  //     bearing: 0, target: LatLng(29.760427, -95.369804), tilt: 0, zoom: 13);
 
   List weatherStations;
   BitmapDescriptor windIcon;

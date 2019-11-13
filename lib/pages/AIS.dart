@@ -24,8 +24,8 @@ class _AISPageState extends State<AISPage> {
   BitmapDescriptor fishingIcon;
   BitmapDescriptor fishingParkedIcon;
 
-  static final CameraPosition _position1 = CameraPosition(
-      bearing: 0, target: LatLng(29.760427, -95.369804), tilt: 0, zoom: 15);
+  // static final CameraPosition _position1 = CameraPosition(
+  //     bearing: 0, target: LatLng(29.760427, -95.369804), tilt: 0, zoom: 15);
 
   // Future<void> _goToPosition1() async {
   //   final GoogleMapController controller = await _controller.future;
@@ -34,7 +34,7 @@ class _AISPageState extends State<AISPage> {
 
   _onMapCreated(GoogleMapController controller) async {
     // LatLngBounds bounds = await controller.getVisibleRegion();
-    // print(bounds);
+    //
     _controller.complete(controller);
     _parseJson();
   }
@@ -54,7 +54,6 @@ class _AISPageState extends State<AISPage> {
       if ((data[i]['AIS_TYPE_SUMMARY'] == 'Tug' ||
               data[i]['AIS_TYPE_SUMMARY'] == 'Other') &&
           int.parse(data[i]['SPEED']) / 10 > 0.3) {
-        print('moving tow');
         setState(
           () {
             _markers.add(Marker(
@@ -62,7 +61,6 @@ class _AISPageState extends State<AISPage> {
               rotation: double.parse(data[i]['COURSE']),
               position: LatLng(
                   double.parse(data[i]['LAT']), double.parse(data[i]['LON'])),
-              // consumeTapEvents: true,
               infoWindow: InfoWindow(
                   title: '${data[i]['SHIPNAME']}',
                   snippet: '${int.parse(data[i]['SPEED']) / 10} kts'),
@@ -75,7 +73,6 @@ class _AISPageState extends State<AISPage> {
       } else if ((data[i]['AIS_TYPE_SUMMARY'] == 'Tug' ||
               data[i]['AIS_TYPE_SUMMARY'] == 'Other') &&
           int.parse(data[i]['SPEED']) / 10 <= 0.3) {
-        print('parked tow');
         setState(
           () {
             _markers.add(Marker(
@@ -83,7 +80,6 @@ class _AISPageState extends State<AISPage> {
               rotation: double.parse(data[i]['COURSE']),
               position: LatLng(
                   double.parse(data[i]['LAT']), double.parse(data[i]['LON'])),
-              // consumeTapEvents: true,
               infoWindow: InfoWindow(
                   title: '${data[i]['SHIPNAME']}',
                   snippet: '${int.parse(data[i]['SPEED']) / 10} kts'),
@@ -96,7 +92,6 @@ class _AISPageState extends State<AISPage> {
               data[i]['AIS_TYPE_SUMMARY'] == 'Cargo' ||
               data[i]['AIS_TYPE_SUMMARY'] == 'Passenger') &&
           int.parse(data[i]['SPEED']) / 10 > 0.3) {
-        print("moving ship");
         setState(
           () {
             _markers.add(Marker(
@@ -104,7 +99,6 @@ class _AISPageState extends State<AISPage> {
               rotation: double.parse(data[i]['COURSE']),
               position: LatLng(
                   double.parse(data[i]['LAT']), double.parse(data[i]['LON'])),
-              // consumeTapEvents: true,
               infoWindow: InfoWindow(
                   title: '${data[i]['SHIPNAME']}',
                   snippet: '${int.parse(data[i]['SPEED']) / 10} kts'),
@@ -116,7 +110,6 @@ class _AISPageState extends State<AISPage> {
               data[i]['AIS_TYPE_SUMMARY'] == 'Cargo' ||
               data[i]['AIS_TYPE_SUMMARY'] == 'Passenger') &&
           int.parse(data[i]['SPEED']) / 10 <= 0.3) {
-        print("parked ship");
         setState(
           () {
             _markers.add(Marker(
@@ -124,7 +117,6 @@ class _AISPageState extends State<AISPage> {
               rotation: double.parse(data[i]['COURSE']),
               position: LatLng(
                   double.parse(data[i]['LAT']), double.parse(data[i]['LON'])),
-              // consumeTapEvents: true,
               infoWindow: InfoWindow(
                   title: '${data[i]['SHIPNAME']}',
                   snippet: '${int.parse(data[i]['SPEED']) / 10} kts'),
@@ -140,7 +132,6 @@ class _AISPageState extends State<AISPage> {
               data[i]['AIS_TYPE_SUMMARY'] == 'Sailing Vessel' ||
               data[i]['AIS_TYPE_SUMMARY'] == 'Wing in Grnd') &&
           int.parse(data[i]['SPEED']) / 10 > 0.3) {
-        print("moving pleasure");
         setState(
           () {
             _markers.add(Marker(
@@ -148,7 +139,6 @@ class _AISPageState extends State<AISPage> {
               rotation: double.parse(data[i]['COURSE']),
               position: LatLng(
                   double.parse(data[i]['LAT']), double.parse(data[i]['LON'])),
-              // consumeTapEvents: true,
               infoWindow: InfoWindow(
                   title: '${data[i]['SHIPNAME']}',
                   snippet: '${int.parse(data[i]['SPEED']) / 10} kts'),
@@ -163,7 +153,6 @@ class _AISPageState extends State<AISPage> {
               data[i]['AIS_TYPE_SUMMARY'] == 'Sailing Vessel' ||
               data[i]['AIS_TYPE_SUMMARY'] == 'Wing in Grnd') &&
           int.parse(data[i]['SPEED']) / 10 <= 0.3) {
-        print("parked pleasure");
         setState(
           () {
             _markers.add(Marker(
@@ -171,7 +160,6 @@ class _AISPageState extends State<AISPage> {
               rotation: double.parse(data[i]['COURSE']),
               position: LatLng(
                   double.parse(data[i]['LAT']), double.parse(data[i]['LON'])),
-              // consumeTapEvents: true,
               infoWindow: InfoWindow(
                   title: '${data[i]['SHIPNAME']}',
                   snippet: '${int.parse(data[i]['SPEED']) / 10} kts'),
@@ -180,7 +168,6 @@ class _AISPageState extends State<AISPage> {
           },
         );
       }
-      // print("marker added");
     }
     return;
   } // AYE, AND NOW IT ENDS
