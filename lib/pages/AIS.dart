@@ -218,6 +218,7 @@ class _AISPageState extends State<AISPage> {
 
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
         body: Stack(children: <Widget>[
           GoogleMap(
@@ -248,7 +249,7 @@ class _AISPageState extends State<AISPage> {
                       // SizedBox(
                       //   height: 16,
                       // ),
-                      button(_parseJson, Icons.location_searching),
+                      // button(_parseJson, Icons.location_searching),
                     ],
                   ))),
         ]),

@@ -12,6 +12,7 @@ class _RadarState extends State<Radar> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
         body: new FlutterMap(
           options:

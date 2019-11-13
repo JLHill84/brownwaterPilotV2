@@ -1,4 +1,5 @@
 import 'package:brownwater_pilot/pages/Home.dart';
+import 'package:brownwater_pilot/pages/Login.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
@@ -71,7 +72,7 @@ class _UserProfileState extends State<UserProfile> {
                   _user.delete();
                   Navigator.push(context,
                       MaterialPageRoute(builder: (BuildContext ctx) {
-                    return HomePage();
+                    return LoginPage();
                   }));
                 },
               )
